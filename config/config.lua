@@ -9,3 +9,5 @@ Config.Items = {
 }
 
 Config.Price = 30
+
+Config.Cooldown = 10

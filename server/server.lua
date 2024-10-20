@@ -1,3 +1,25 @@
+local robbedMachines = {}
+local resetTimers = {}
+
+lib.callback.register('fang-bubblegumrobbery:server:getRobbedMachines', function(_, machineEntity)
+    return robbedMachines[machineEntity]
+end)
+
+lib.callback.register('fang-bubblegumrobbery:server:setRobbedStatus', function(_, entityID, state)
+    if robbedMachines[entityID] then return end
+
+    robbedMachines[entityID] = state
+   
+    if state and not resetTimers[entityID] then
+        resetTimers[entityID] = lib.timer((Config.Cooldown * 1000), function()
+            robbedMachines[entityID] = nil
+            resetTimers[entityID] = nil
+        end, true)
+    end
+
+    return (robbedMachines[entityID] == state)
+end)
+
 lib.callback.register('fang-bubblerobbery:server:giveItem', function(source)
     local items = Config.Items
     local itemSelect = math.random(1,5)

@@ -4,7 +4,8 @@
     462203053 ,
 }
 
-local function progressBar(modelCoords)
+local function progressBar(data)
+    local modelCoords = data.coords
     local pedCoords = GetEntityCoords(PlayerPedId())
     if #(pedCoords - modelCoords) > 0.75 then
         lib.notify({
@@ -27,7 +28,9 @@ local function progressBar(modelCoords)
             clip = 'pick_door',
         },
     }) then 
-        lib.callback.await('fang-bubblerobbery:server:giveMoney') 
+        lib.callback.await('fang-bubblegumrobbery:server:setRobbedStatus', false, data.entity, true)
+        lib.callback.await('fang-bubblerobbery:server:giveMoney')
+        --lib.callback.await('fang-bubblerobbery:server:giveMoney', false, data.entity) 
         lib.notify({
             title = 'Success',
             description = 'You stole change... wtf is wrong with you',
@@ -52,9 +55,15 @@ local function setupBuyTargets()
             icon = 'fa-solid fa-sack-dollar',
             items = 'lockpick',
             onSelect = function(data)
-                print(data)
+                local isRobbed = lib.callback.await('fang-bubblegumrobbery:server:getRobbedMachines', false, data.entity)
+                if isRobbed then
+                   return lib.notify({
+                        title = 'You\'re blind!',
+                        description = 'The machine is broken. Come back later',
+                        type = 'error'
+                    }) 
+                end
                 local success = lib.skillCheck({'easy', 'easy', {areaSize = 60, speedMultiplier = 2}}, {'1', '2', '3', '4'})
-                
                 if not success then
                     lib.notify({
                         title = 'Failed',
@@ -62,7 +71,7 @@ local function setupBuyTargets()
                         type = 'error'
                     }) return
                 end
-                progressBar(data.coords)
+                progressBar(data)
             end
         }
     })
