@@ -29,31 +29,46 @@ If someone finds a way to fix that (if it is possible, I am still learning as I 
         label = 'Red Gumball',
         weight = 10,
         stack = true,
-        close = true
+        close = true,
+        client = {
+            image = 'redgumball.png'
+        }
     },
     ['gum2'] = {
         label = 'Yellow Gumball',
         weight = 10,
         stack = true,
-        close = true
+        close = true,
+        client = {
+            image = 'yellowgumball.png'
+        }
     },
     ['gum3'] = {
         label = 'Green Gumball',
         weight = 10,
         stack = true,
-        close = true
+        close = true,
+        client = {
+            image = 'greeengumball.png'
+        }
     },
     ['gum4'] = {
         label = 'Blue Gumball',
         weight = 10,
         stack = true,
-        close = true
+        close = true,
+        client = {
+            image = 'bluegumball.png'
+        }
     },
     ['gum5'] = {
         label = 'Purple Gumball',
         weight = 10,
         stack = true,
-        close = true
+        close = true,
+        client = {
+            image = 'purplegumball.png'
+        }
     },
 }
 ```
