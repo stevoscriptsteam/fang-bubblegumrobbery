@@ -55,4 +55,5 @@ If someone finds a way to fix that (if it is possible, I am still learning as I 
         stack = true,
         close = true
     },
-}```
+}
+```
