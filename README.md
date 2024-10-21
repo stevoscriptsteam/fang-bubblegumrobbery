@@ -1,18 +1,58 @@
-# dark-lifts
-Free basic elevator script for qbox
-This is my first attempt at making anything for fivem, so I would expect issues. It works just fine for myself so if there are issues, please do let me know.
-I do plan on adding notification support for ox and okok soon enough. I also plan on adding support for other targets such as qb or whatever other suggestions people ask for.
-I also wish to implement locales in case of people wanting to use it in different locale servers.
+# fang-bubblegumrobbery
+Thanks to RiotX for the idea and xT for the function I pulled my hair out for :)
 
-### Dependencies:
- - Qbox/Qbx_core
- - ox_target
- - ox_lib
+# Description
+This script is what it is. You can rob the gumball machines around town! 
+This script allows players to purchase gumballs for a small amount of change, which can be changed in the configs.
+But if someone wants to be devious and they're too broke to buy one, then if they have lockpicks, they can break the machine open
+and steal some change. Mind you they can only get 10-30 bucks out of it. 
 
-### Usage:
+# Features
+- Buy gumballs from the machines around town
+- Steal from the machine
+- Configurable cooldown timer, buy price and items.
+
+# Dependencies
+- ox_inventory
+- ox_target
+- qbx_core
+
+# Other things
+The items/images implement as they should, but I have not added any usages for the items themselves. 
+I believe that other devs can do what they need with them, such as add effects, buffs etc. Have some free reign with them!
+Also the only issue so far with this (that I am unsure on how to change) is that if a player goes a certain distance, the prop will leave the players scope and obviously respawn with a new ID.
+If someone finds a way to fix that (if it is possible, I am still learning as I go here) make a PR and I will more than likely accept it.
+
+#Items
 ```lua
-Config.PolyDebug = false -- This will draw a preview of where your zones are when set to true
-Config.PullUpTime = 3000 -- 1000 = 1 second. This will be how long your screen stays black for while transitioning. Recommend 3000 or higher
-```
- ## Credits
- - quantummalice | Helped me out in the overextended discord with some of the code as I didnt understand it and I don't want to take credit for what I didn't do alone
+    ['gum1'] = {
+        label = 'Red Gumball',
+        weight = 10,
+        stack = true,
+        close = true
+    },
+    ['gum2'] = {
+        label = 'Yellow Gumball',
+        weight = 10,
+        stack = true,
+        close = true
+    },
+    ['gum3'] = {
+        label = 'Green Gumball',
+        weight = 10,
+        stack = true,
+        close = true
+    },
+    ['gum4'] = {
+        label = 'Blue Gumball',
+        weight = 10,
+        stack = true,
+        close = true
+    },
+    ['gum5'] = {
+        label = 'Purple Gumball',
+        weight = 10,
+        stack = true,
+        close = true
+    },
+}```
