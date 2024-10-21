@@ -13,7 +13,7 @@ lib.callback.register('fang-bubblegumrobbery:server:setRobbedStatus', function(_
     if state and not resetTimers[entityID] then
         resetTimers[entityID] = lib.timer((Config.Cooldown * 1000), function()
             robbedMachines[entityID] = nil
-            resetTimers[entityID] = nil
+            resetTimers[entityID] = nil 
         end, true)
     end
 

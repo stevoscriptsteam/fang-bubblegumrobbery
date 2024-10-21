@@ -30,7 +30,6 @@ local function progressBar(data)
     }) then 
         lib.callback.await('fang-bubblegumrobbery:server:setRobbedStatus', false, data.entity, true)
         lib.callback.await('fang-bubblerobbery:server:giveMoney')
-        --lib.callback.await('fang-bubblerobbery:server:giveMoney', false, data.entity) 
         lib.notify({
             title = 'Success',
             description = 'You stole change... wtf is wrong with you',
@@ -80,3 +79,4 @@ end
 CreateThread(function()
     setupBuyTargets() --sets up targets to buy gumballs
 end)
+
