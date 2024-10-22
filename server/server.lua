@@ -1,3 +1,4 @@
+local config = require('config.lua')
 local robbedMachines = {}
 local resetTimers = {}
 
@@ -5,13 +6,19 @@ lib.callback.register('fang-bubblegumrobbery:server:getRobbedMachines', function
     return robbedMachines[machineEntity]
 end)
 
-lib.callback.register('fang-bubblegumrobbery:server:setRobbedStatus', function(_, entityID, state)
-    if robbedMachines[entityID] then return end
+lib.callback.register('fang-bubblegumrobbery:server:setRobbedStatus', function(source, entityID, state)
+    if robbedMachines[entityID] then
+        lib.print.warn('[WARNING] Player triggered giveMoney callback with robbed machine')
+        return false
+    end
+    if #(GetEntityCoords(cache.ped) - GetEntityCoords(entityID)) > config.Distance then
+        lib.print.warn('[WARNING] Player triggered giveMoney callback with invalid distance')
+        return false
+    end
 
     robbedMachines[entityID] = state
-   
     if state and not resetTimers[entityID] then
-        resetTimers[entityID] = lib.timer((Config.Cooldown * 1000), function()
+        resetTimers[entityID] = lib.timer((config.Cooldown * 1000), function()
             robbedMachines[entityID] = nil
             resetTimers[entityID] = nil 
         end, true)
@@ -21,25 +28,32 @@ lib.callback.register('fang-bubblegumrobbery:server:setRobbedStatus', function(_
 end)
 
 lib.callback.register('fang-bubblerobbery:server:giveItem', function(source)
-    local items = Config.Items
+    local items = config.Items
     local itemSelect = math.random(1,5)
     local prizeItem = items[itemSelect].item
-    local moneyCount = exports.ox_inventory:GetItemCount(source, 'money')
-    local data = {
-        title = 'Error',
-        description = 'You are too broke...',
-        type = 'error'
-    }
-    if moneyCount < Config.Price then
-        TriggerClientEvent('ox_lib:notify', source, data)
-        return 
+    if not exports.ox_inventory:RemoveItem(source, 'money', config.Price) then 
+        return TriggerClientEvent('ox_lib:notify', source, {
+            title = 'Error',
+            description = 'You are too broke...',
+            type = 'error'
+        })
     end
-    exports.ox_inventory:RemoveItem(source, 'money', Config.Price)
     exports.ox_inventory:AddItem(source, prizeItem, items[itemSelect].count)
 end)
 
-lib.callback.register('fang-bubblerobbery:server:giveMoney', function(source)
-    local amount = math.random(10,30)
-    exports.ox_inventory:RemoveItem(source, 'lockpick', 1)
-    exports.ox_inventory:AddItem(source, 'money', amount)
+lib.callback.register('fang-bubblerobbery:server:giveMoney', function(source, entity)
+    if robbedMachines[entity] then
+        lib.print.warn('[WARNING] Player triggered giveMoney callback with robbed machine')
+        return false
+    end
+    if #(GetEntityCoords(cache.ped) - GetEntityCoords(entity)) > config.Distance then
+        lib.print.warn('[WARNING] Player triggered giveMoney callback with invalid distance')
+        return false
+    end
+    if not exports.ox_inventory:RemoveItem(source, 'lockpick', 1) then
+        lib.print.warn('[WARNING] Player triggered giveMoney callback without lockpick')
+        return false
+    end
+    exports.ox_inventory:AddItem(source, 'money', math.random(10,30))
+    return true
 end)
