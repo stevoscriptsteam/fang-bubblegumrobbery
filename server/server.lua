@@ -1,4 +1,4 @@
-local config = require('config.lua')
+local config = require('config.config')
 local robbedMachines = {}
 local resetTimers = {}
 
