@@ -8,6 +8,6 @@ return {
     },
 
     Price = 30,
-
+    Distance = 3.2, -- Distance which machine actions on server get captured (cheat protection)
     Cooldown = 90
 }
