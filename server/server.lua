@@ -1,3 +1,4 @@
+local config = lib.require('config.lua')
 local robbedMachines = {}
 local resetTimers = {}
 
@@ -11,7 +12,7 @@ lib.callback.register('fang-bubblegumrobbery:server:setRobbedStatus', function(_
     robbedMachines[entityID] = state
    
     if state and not resetTimers[entityID] then
-        resetTimers[entityID] = lib.timer((Config.Cooldown * 1000), function()
+        resetTimers[entityID] = lib.timer((config.Cooldown * 1000), function()
             robbedMachines[entityID] = nil
             resetTimers[entityID] = nil 
         end, true)
@@ -21,7 +22,7 @@ lib.callback.register('fang-bubblegumrobbery:server:setRobbedStatus', function(_
 end)
 
 lib.callback.register('fang-bubblerobbery:server:giveItem', function(source)
-    local items = Config.Items
+    local items = config.Items
     local itemSelect = math.random(1,5)
     local prizeItem = items[itemSelect].item
     local moneyCount = exports.ox_inventory:GetItemCount(source, 'money')
@@ -30,11 +31,11 @@ lib.callback.register('fang-bubblerobbery:server:giveItem', function(source)
         description = 'You are too broke...',
         type = 'error'
     }
-    if moneyCount < Config.Price then
+    if moneyCount < config.Price then
         TriggerClientEvent('ox_lib:notify', source, data)
         return 
     end
-    exports.ox_inventory:RemoveItem(source, 'money', Config.Price)
+    exports.ox_inventory:RemoveItem(source, 'money', config.Price)
     exports.ox_inventory:AddItem(source, prizeItem, items[itemSelect].count)
 end)
 
